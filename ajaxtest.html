@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <span id="ajaxButton" style="cursor: pointer; text-decoration: underline">
+      Make a request
+    </span>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript ">
+        (function() {
+            var httpRequest;
+            document.getElementById("ajaxButton").onclick = function() { makeRequest("http://localhost:8082/"); };
+
+
+            function makeRequest(url) {
+                httpRequest = new XMLHttpRequest();
+
+                if (!httpRequest) {
+                    alert('Giving up :( Cannot create an XMLHTTP instance');
+                    return false;
+                }
+                httpRequest.onreadystatechange = alertContents;
+                httpRequest.open('GET', url, true);
+                httpRequest.send(null);
+
+//                $.ajax({
+//                    url:   "http://localhost:8082/",
+//                    type: "GET",
+//                    dataType: "binary", //因为是调用nodeJS返回的json数据，所以必须使用binary类型
+//                    error: function(XMLHttpRequest, textStatus, errorThrown){
+//                        var s
+//                        alert("error message : "+textStatus + errorThrown.toString())
+//                    },
+//                    success: function(data){
+//
+//                        alert("success message : "+data)
+//
+//                    }
+//
+//                });
+            }
+
+            function alertContents() {
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        var xmldoc = httpRequest.responseText;
+//                        var root_node = xmldoc.getElementsByTagName('root').item(0);
+//                        alert(root_node.firstChild.data);
+                        console.log(xmldoc);
+                    } else {
+                        console.log('There was a problem with the request.');
+                    }
+                }
+            }
+
+
+        })();
+    </script>
+</head>
+<body>
+
+    <input id="ajaxbutton2" type="button"/>
+</body>
+</html>
